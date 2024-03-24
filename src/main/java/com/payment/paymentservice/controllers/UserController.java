@@ -1,29 +1,35 @@
 package com.payment.paymentservice.controllers;
 
-import com.payment.paymentservice.dtos.UserRecordDto;
-import com.payment.paymentservice.models.base.User;
-import com.payment.paymentservice.repositories.UserRepository;
+import com.payment.paymentservice.models.Response;
+import com.payment.paymentservice.models.dtos.UserRecordDto;
+import com.payment.paymentservice.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
     final
-    UserRepository userRepository;
+    UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/api/v1/users")
-    public ResponseEntity<User> saveUser(@RequestBody @Valid UserRecordDto userRecordDto) {
-        var user = new User();
-        BeanUtils.copyProperties(userRecordDto, user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
+    @PostMapping("/users")
+    public ResponseEntity<Response> saveUser(@RequestBody @Valid UserRecordDto userRecordDto, HttpServletRequest request) {
+        userService.save(userRecordDto);
+        Response response = new Response(request.getRequestURI(), HttpStatus.CREATED.value(), "User successfully created", Instant.now());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

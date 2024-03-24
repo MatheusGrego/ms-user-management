@@ -1,8 +1,6 @@
-package com.payment.paymentservice.models;
+package com.payment.paymentservice.temp_stash;
 
-import com.payment.paymentservice.enums.TransactionStatus;
-import com.payment.paymentservice.enums.TransactionType;
-import com.payment.paymentservice.models.base.User;
+import com.payment.paymentservice.models.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,7 +19,6 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
 
     private BigDecimal amount;
     private String description;

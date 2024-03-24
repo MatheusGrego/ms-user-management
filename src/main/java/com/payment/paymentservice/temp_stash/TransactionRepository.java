@@ -1,6 +1,5 @@
-package com.payment.paymentservice.repositories;
+package com.payment.paymentservice.temp_stash;
 
-import com.payment.paymentservice.models.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
