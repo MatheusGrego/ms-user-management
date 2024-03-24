@@ -17,8 +17,7 @@ import java.time.Instant;
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
-    final
-    UserService userService;
+    final UserService userService;
 
 
     public UserController(UserService userService) {

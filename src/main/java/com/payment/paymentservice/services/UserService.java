@@ -23,8 +23,7 @@ public class UserService implements IUser<UserRecordDto> {
     public void save(UserRecordDto dto) {
         var user = new User();
         BeanUtils.copyProperties(dto, user);
-
-
+        userRepository.save(user);
     }
 
     @Override
