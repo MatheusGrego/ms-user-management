@@ -1,5 +1,6 @@
 package com.payment.paymentservice.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.payment.paymentservice.enums.DocumentType;
 import com.payment.paymentservice.enums.UserType;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
+
 
 @Entity(name = "service_users")
 @Data
@@ -32,12 +34,13 @@ public class User implements Serializable {
     private String full_name;
     @Column(unique = true)
     private String document;
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
     private String address;
     @Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;
     private String phone_number;
     @Column(name = "ps_hs", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
     @Enumerated(EnumType.STRING)
     private UserType userType;

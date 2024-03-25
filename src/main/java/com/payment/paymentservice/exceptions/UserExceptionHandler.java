@@ -33,7 +33,7 @@ public class UserExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
 
 
@@ -60,6 +60,19 @@ public class UserExceptionHandler {
                 request.getRequestURI(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Registry already exists",
+                Instant.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Response> handlerUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
+
+        Response response = new Response(
+                request.getRequestURI(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
                 Instant.now()
         );
 
