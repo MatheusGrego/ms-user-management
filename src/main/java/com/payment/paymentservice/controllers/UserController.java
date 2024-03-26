@@ -29,13 +29,21 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> findById(@PathVariable UUID id) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.findById(id));
+    public ResponseEntity<User> findById(@PathVariable(value = "id") UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
     }
 
     @GetMapping("/users/")
     public ResponseEntity<List<User>> findAll() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<Response> update(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserRecordDto userRecordDto, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, userRecordDto, request));
+    }
+
+
+
 
 }

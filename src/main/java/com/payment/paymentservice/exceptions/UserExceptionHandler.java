@@ -25,7 +25,10 @@ public class UserExceptionHandler {
         Response response = new Response(
                 request.getRequestURI(),
                 HttpStatus.BAD_REQUEST.value(),
-                ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining()),
+                ex.getConstraintViolations()
+                        .stream()
+                        .map(ConstraintViolation::getMessage)
+                        .collect(Collectors.joining()),
                 Instant.now()
 
         );
@@ -71,11 +74,11 @@ public class UserExceptionHandler {
 
         Response response = new Response(
                 request.getRequestURI(),
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
                 Instant.now()
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }

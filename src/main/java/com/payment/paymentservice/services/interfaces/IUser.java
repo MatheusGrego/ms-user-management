@@ -14,7 +14,7 @@ public interface IUser<T> {
 
     List<User> findAll();
 
-    void update();
+    Response update(UUID id, T user, HttpServletRequest request);
 
     void delete();
 }

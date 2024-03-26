@@ -33,14 +33,12 @@ public class UserService implements IUser<UserRecordDto> {
         userRepository.save(user);
 
         return response;
-
-
     }
 
     @Override
     public User findById(UUID id) {
         Optional<User> user = userRepository.findById(id);
-        return user.orElseThrow(() -> new UserNotFoundException("User not found with ID: "+ id));
+        return user.orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
     }
 
     @Override
@@ -49,8 +47,15 @@ public class UserService implements IUser<UserRecordDto> {
     }
 
     @Override
-    public void update() {
+    public Response update(UUID id, UserRecordDto dto, HttpServletRequest request) {
+        User existingUser = findById(id);
 
+        BeanUtils.copyProperties(dto, existingUser);
+        Response response = new Response(request.getRequestURI(), HttpStatus.OK.value(), "User successfully updated", Instant.now());
+
+        userRepository.save(existingUser);
+
+        return response;
     }
 
     @Override
