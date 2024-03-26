@@ -43,6 +43,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, userRecordDto, request));
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Response> delete(@PathVariable(value = "id") UUID id, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.delete(id, request));
+    }
+
 
 
 

@@ -4,14 +4,13 @@ import com.payment.paymentservice.exceptions.UserNotFoundException;
 import com.payment.paymentservice.models.Response;
 import com.payment.paymentservice.models.User;
 import com.payment.paymentservice.models.dtos.UserRecordDto;
+import com.payment.paymentservice.models.factories.ResponseFactory;
 import com.payment.paymentservice.repositories.UserRepository;
 import com.payment.paymentservice.services.interfaces.IUser;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,19 +19,21 @@ import java.util.UUID;
 public class UserService implements IUser<UserRecordDto> {
     final
     UserRepository userRepository;
+    final
+    ResponseFactory responseFactory;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ResponseFactory responseFactory) {
         this.userRepository = userRepository;
+        this.responseFactory = responseFactory;
     }
 
     @Override
     public Response save(UserRecordDto dto, HttpServletRequest request) {
         var user = new User();
         BeanUtils.copyProperties(dto, user);
-        Response response = new Response(request.getRequestURI(), HttpStatus.CREATED.value(), "User successfully created", Instant.now());
         userRepository.save(user);
 
-        return response;
+        return responseFactory.createCreatedResponse(request.getRequestURI(), "User successfully created");
     }
 
     @Override
@@ -49,18 +50,18 @@ public class UserService implements IUser<UserRecordDto> {
     @Override
     public Response update(UUID id, UserRecordDto dto, HttpServletRequest request) {
         User existingUser = findById(id);
-
         BeanUtils.copyProperties(dto, existingUser);
-        Response response = new Response(request.getRequestURI(), HttpStatus.OK.value(), "User successfully updated", Instant.now());
-
         userRepository.save(existingUser);
 
-        return response;
+        return responseFactory.createSuccessResponse(request.getRequestURI(), "User with ID =%s successfully updated".formatted(id));
     }
 
     @Override
-    public void delete() {
+    public Response delete(UUID id, HttpServletRequest request) {
+        User existingUser = findById(id);
+        userRepository.deleteById(existingUser.getId());
 
+        return responseFactory.createSuccessResponse(request.getRequestURI(), "User with ID =%s successfully deleted".formatted(id));
     }
 
 }

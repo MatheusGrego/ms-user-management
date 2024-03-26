@@ -16,5 +16,5 @@ public interface IUser<T> {
 
     Response update(UUID id, T user, HttpServletRequest request);
 
-    void delete();
+    Response delete(UUID id, HttpServletRequest request);
 }

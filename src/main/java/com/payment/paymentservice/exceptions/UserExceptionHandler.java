@@ -1,6 +1,7 @@
 package com.payment.paymentservice.exceptions;
 
 import com.payment.paymentservice.models.Response;
+import com.payment.paymentservice.models.factories.ResponseFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -12,72 +13,52 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.Instant;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class UserExceptionHandler {
+    final
+    ResponseFactory responseFactory;
+
+    public UserExceptionHandler(ResponseFactory responseFactory) {
+        this.responseFactory = responseFactory;
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Response> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
+        var messages = ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.joining());
 
-
-        Response response = new Response(
-                request.getRequestURI(),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getConstraintViolations()
-                        .stream()
-                        .map(ConstraintViolation::getMessage)
-                        .collect(Collectors.joining()),
-                Instant.now()
-
-        );
+        var response = responseFactory.createBadRequestResponse(request.getRequestURI(), messages);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        var messages = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining("; "));
 
-
-        Response response = new Response(
-                request.getRequestURI(),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getBindingResult()
-                        .getFieldErrors()
-                        .stream()
-                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                        .collect(Collectors.joining("; ")),
-                Instant.now()
-
-        );
+        var response = responseFactory.createBadRequestResponse(request.getRequestURI(), messages);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Response> handleDataIntegrityException(HttpServletRequest request) {
-
-
-        Response response = new Response(
-                request.getRequestURI(),
-                HttpStatus.BAD_REQUEST.value(),
-                "Registry already exists",
-                Instant.now()
-        );
+        var response = responseFactory.createBadRequestResponse(request.getRequestURI(), "Registry already exists");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Response> handlerUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
-
-        Response response = new Response(
-                request.getRequestURI(),
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                Instant.now()
-        );
+        var response = responseFactory.createNotFoundResponse(request.getRequestURI(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
