@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.payment</groupId>
-    <artifactId>payment-service</artifactId>
+    <artifactId>ms-user-management</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>payment-service</name>
-    <description>payment service</description>
+    <name>ms-user-management</name>
+    <description>ms-user-management</description>
     <properties>
         <java.version>17</java.version>
     </properties>
