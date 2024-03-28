@@ -1,6 +1,6 @@
 package com.payment.usermanagement.models.factories;
 
-import com.payment.usermanagement.models.dtos.Response;
+import com.payment.usermanagement.models.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 

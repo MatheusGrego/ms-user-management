@@ -1,4 +1,4 @@
-package com.payment.usermanagement.models.dtos;
+package com.payment.usermanagement.dtos;
 
 import com.payment.usermanagement.enums.DocumentType;
 import com.payment.usermanagement.enums.UserType;

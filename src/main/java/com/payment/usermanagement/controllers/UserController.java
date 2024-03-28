@@ -1,8 +1,8 @@
 package com.payment.usermanagement.controllers;
 
 import com.payment.usermanagement.models.User;
-import com.payment.usermanagement.models.dtos.Response;
-import com.payment.usermanagement.models.dtos.UserRecordDto;
+import com.payment.usermanagement.models.Response;
+import com.payment.usermanagement.dtos.UserRecordDto;
 import com.payment.usermanagement.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

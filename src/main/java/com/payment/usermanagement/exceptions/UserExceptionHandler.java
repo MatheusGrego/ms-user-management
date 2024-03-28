@@ -1,6 +1,6 @@
 package com.payment.usermanagement.exceptions;
 
-import com.payment.usermanagement.models.dtos.Response;
+import com.payment.usermanagement.models.Response;
 import com.payment.usermanagement.models.factories.ResponseFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;

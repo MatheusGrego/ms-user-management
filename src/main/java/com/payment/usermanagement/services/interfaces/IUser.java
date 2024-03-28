@@ -1,6 +1,6 @@
 package com.payment.usermanagement.services.interfaces;
 
-import com.payment.usermanagement.models.dtos.Response;
+import com.payment.usermanagement.models.Response;
 import com.payment.usermanagement.models.User;
 import jakarta.servlet.http.HttpServletRequest;
 

@@ -1,4 +1,4 @@
-package com.payment.usermanagement.models.dtos;
+package com.payment.usermanagement.models;
 
 import java.time.Instant;
 

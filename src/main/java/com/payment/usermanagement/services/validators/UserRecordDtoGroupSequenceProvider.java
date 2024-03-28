@@ -1,7 +1,7 @@
 package com.payment.usermanagement.services.validators;
 
 import com.payment.usermanagement.enums.DocumentType;
-import com.payment.usermanagement.models.dtos.UserRecordDto;
+import com.payment.usermanagement.dtos.UserRecordDto;
 import com.payment.usermanagement.services.interfaces.groups.CnpjGroup;
 import com.payment.usermanagement.services.interfaces.groups.CpfGroup;
 import org.hibernate.validator.spi.group.DefaultGroupSequenceProvider;
