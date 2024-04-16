@@ -116,9 +116,17 @@ This service is responsible for user management in the payment microservices sys
 | `address`   | `string` | User's address                    |
 | `email`     | `string` | User's email address              |
 | `phone_number` | `string` | User's phone number            |
-| `pwd`       | `string` | User's password                   |
+| `pwd`       | `string` | User's password                  |
 | `userType`  | `string` | User type (e.g., "USER", "MERCHANT") |
 | `documentType` | `string` | Document type (e.g., "CPF", "CNPJ") |
+
+- **Password constraints**:
+At least 8 characters.
+At least one uppercase letter.
+At least one lowercase letter.
+At least one numeric digit.
+At least one special character.
+Does not contain any whitespace.
 
 ### Example Request Body
 ```json
