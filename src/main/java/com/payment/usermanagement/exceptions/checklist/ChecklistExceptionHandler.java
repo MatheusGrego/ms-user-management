@@ -1,4 +1,4 @@
-package com.payment.usermanagement.exceptions;
+package com.payment.usermanagement.exceptions.checklist;
 
 import com.payment.usermanagement.models.Response;
 import com.payment.usermanagement.models.factories.ResponseFactory;
@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class UserExceptionHandler {
-    final
-    ResponseFactory responseFactory;
+public class ChecklistExceptionHandler {
+    final ResponseFactory responseFactory;
 
-    public UserExceptionHandler(ResponseFactory responseFactory) {
+    public ChecklistExceptionHandler(ResponseFactory responseFactory) {
         this.responseFactory = responseFactory;
     }
 
@@ -51,13 +50,13 @@ public class UserExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Response> handleDataIntegrityException(HttpServletRequest request) {
-        var response = responseFactory.createBadRequestResponse(request.getRequestURI(), "Registry already exists");
+        var response = responseFactory.createBadRequestResponse(request.getRequestURI(), "Checklist already exists");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Response> handlerUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
+    @ExceptionHandler(ChecklistNotFoundException.class)
+    public ResponseEntity<Response> handleChecklistNotFoundException(ChecklistNotFoundException ex, HttpServletRequest request) {
         var response = responseFactory.createNotFoundResponse(request.getRequestURI(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

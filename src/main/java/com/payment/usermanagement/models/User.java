@@ -3,27 +3,26 @@ package com.payment.usermanagement.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.payment.usermanagement.enums.DocumentType;
 import com.payment.usermanagement.enums.UserType;
+import com.payment.usermanagement.models.checklist.Checklist;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity(name = "service_users")
 @Data
-public class User extends RepresentationModel<User> implements Serializable {
+public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     /* TODO
+     * - Token, full_name, user-id <----
      * - Role-Based permissions, OAuth2 Tokens
      * - Notifications Preferences, Session managements, CEP
      * */
@@ -35,13 +34,13 @@ public class User extends RepresentationModel<User> implements Serializable {
     private String username;
     @Column(name = "user_full_name", nullable = false)
     private String full_name;
+    @Column(name = "company_name", nullable = false)
+    @JsonProperty("company_name")
+    private String companyName;
     @Column(unique = true)
     private String document;
-    private BigDecimal balance = BigDecimal.ZERO;
-    private String address;
-    @Column(name = "email", nullable = false, length = 100, unique = true)
-    private String email;
-    private String phone_number;
+    @JsonProperty("phone_number")
+    private String phoneNumber;
     @Column(name = "ps_hs", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
@@ -49,6 +48,9 @@ public class User extends RepresentationModel<User> implements Serializable {
     private UserType userType;
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
+
+    @OneToMany(mappedBy = "userFinisher", fetch = FetchType.EAGER)
+    private List<Checklist> checklistsFinished;
 
     @Column(name = "created_at")
     private Instant createdAt = Instant.now();

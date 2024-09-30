@@ -1,8 +1,8 @@
-package com.payment.usermanagement.controllers;
+package com.payment.usermanagement.controllers.user;
 
 import com.payment.usermanagement.models.User;
 import com.payment.usermanagement.models.Response;
-import com.payment.usermanagement.dtos.UserRecordDto;
+import com.payment.usermanagement.dtos.user.UserRecordDto;
 import com.payment.usermanagement.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class UserController {
     final UserService userService;
-
 
     public UserController(UserService userService) {
         this.userService = userService;

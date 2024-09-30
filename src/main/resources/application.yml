@@ -1,15 +1,18 @@
 spring:
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
   application:
-    name: payment-service
+    name: IRenova-check
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/microservices?currentSchema=payment-service
+    url: jdbc:postgresql://localhost:5432/IRenova-check?currentSchema=IRenova-check
     username: postgres
-    password: root
+    password: toor
   jpa:
     properties:
       hibernate:
-        default_schema: payment-service
+        default_schema: IRenova-check
     hibernate:
       ddl-auto: update
     show-sql: true
