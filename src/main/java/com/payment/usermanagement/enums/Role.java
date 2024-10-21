@@ -1,6 +1,7 @@
 package com.payment.usermanagement.enums;
 
-public enum UserType {
+
+public enum Role {
     ADMIN,
     MANAGER,
     USER

@@ -1,7 +1,7 @@
 package com.payment.usermanagement.exceptions;
 
-import com.payment.usermanagement.models.Response;
-import com.payment.usermanagement.models.factories.ResponseFactory;
+import com.payment.usermanagement.models.response.Response;
+import com.payment.usermanagement.models.response.factories.ResponseFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -49,7 +49,7 @@ public class QrCodeExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    // Exceção para integridade de dados, como tentativa de duplicação de QrCode
+    // Exceção para integridade de dados, como tentativa de duplicação de QR Code
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Response> handleDataIntegrityViolationException(HttpServletRequest request) {
         var response = responseFactory.createBadRequestResponse(request.getRequestURI(), "QR Code already exists");
@@ -61,5 +61,12 @@ public class QrCodeExceptionHandler {
     public ResponseEntity<Response> handleQrCodeNotFoundException(QrCodeNotFoundException ex, HttpServletRequest request) {
         var response = responseFactory.createNotFoundResponse(request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    // Exceção para falha na geração do QR Code
+    @ExceptionHandler(QrCodeGenerationException.class)
+    public ResponseEntity<Response> handleQrCodeGenerationException(QrCodeGenerationException ex, HttpServletRequest request) {
+        var response = responseFactory.createServerErrorResponse(request.getRequestURI(), "Failed to generate QR Code: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }

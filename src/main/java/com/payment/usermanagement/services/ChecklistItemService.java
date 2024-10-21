@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.usermanagement.dtos.checklist.ChecklistItemRecordDto;
 import com.payment.usermanagement.exceptions.checklist.ChecklistItemNotFoundException;
 import com.payment.usermanagement.exceptions.checklist.ChecklistNotFoundException;
-import com.payment.usermanagement.models.Response;
+import com.payment.usermanagement.models.response.Response;
 import com.payment.usermanagement.models.checklist.Checklist;
 import com.payment.usermanagement.models.checklist.ChecklistItem;
-import com.payment.usermanagement.models.factories.ResponseFactory;
+import com.payment.usermanagement.models.response.factories.ResponseFactory;
 import com.payment.usermanagement.repositories.ChecklistItemRepository;
 import com.payment.usermanagement.repositories.ChecklistRepository;
 import com.payment.usermanagement.services.interfaces.ICrud;
@@ -33,6 +33,26 @@ public class ChecklistItemService implements ICrud<Object, Object> {
         this.responseFactory = responseFactory;
         this.objectMapper = objectMapper;
     }
+    public Response addItemsToChecklist(List<ChecklistItemRecordDto> checklistItemDtos, HttpServletRequest request) {
+        for (ChecklistItemRecordDto checklistItemDto : checklistItemDtos) {
+            // Encontrar a checklist pelo ID
+            Checklist checklist = checklistRepository.findById(checklistItemDto.checklistId())
+                    .orElseThrow(() -> new ChecklistNotFoundException("Checklist not found with ID: " + checklistItemDto.checklistId()));
+
+            // Criar um novo ChecklistItem e associá-lo à checklist
+            ChecklistItem checklistItem = new ChecklistItem();
+            BeanUtils.copyProperties(checklistItemDto, checklistItem);
+            checklistItem.setChecklist(checklist);
+
+            // Salvar o item
+            checklistItemRepository.save(checklistItem);
+        }
+
+        // Retornar a resposta
+        return responseFactory.createCreatedResponse(request.getRequestURI(), "Checklist items successfully created");
+    }
+
+
     public Response addItemToChecklist(ChecklistItemRecordDto checklistItemDto, HttpServletRequest request) {
         // Encontrar a checklist pelo ID
         Checklist checklist = checklistRepository.findById(checklistItemDto.checklistId())

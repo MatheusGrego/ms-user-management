@@ -7,7 +7,7 @@ import java.util.List;
 
 public record ChecklistRecordDto(
         @NotNull
-        String description,
+        String title,
         List<ChecklistItemRecordDto> items
 ) {
 }

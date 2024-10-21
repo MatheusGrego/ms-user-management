@@ -1,4 +1,4 @@
-package com.payment.usermanagement.models;
+package com.payment.usermanagement.models.response;
 
 import java.time.Instant;
 

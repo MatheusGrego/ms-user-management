@@ -1,7 +1,7 @@
 package com.payment.usermanagement.exceptions.checklist;
 
-import com.payment.usermanagement.models.Response;
-import com.payment.usermanagement.models.factories.ResponseFactory;
+import com.payment.usermanagement.models.response.Response;
+import com.payment.usermanagement.models.response.factories.ResponseFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

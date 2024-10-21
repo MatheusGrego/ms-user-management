@@ -1,7 +1,7 @@
 package com.payment.usermanagement.enums;
 
-import com.payment.usermanagement.services.interfaces.groups.CnpjGroup;
-import com.payment.usermanagement.services.interfaces.groups.CpfGroup;
+import com.payment.usermanagement.util.validators.groups.CnpjGroup;
+import com.payment.usermanagement.util.validators.groups.CpfGroup;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

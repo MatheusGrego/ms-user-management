@@ -2,10 +2,9 @@ package com.payment.usermanagement.dtos.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.payment.usermanagement.enums.DocumentType;
-import com.payment.usermanagement.enums.UserType;
-import com.payment.usermanagement.services.interfaces.groups.CnpjGroup;
-import com.payment.usermanagement.services.interfaces.groups.CpfGroup;
-import com.payment.usermanagement.services.validators.UserRecordDtoGroupSequenceProvider;
+import com.payment.usermanagement.util.validators.UserRecordDtoGroupSequenceProvider;
+import com.payment.usermanagement.util.validators.groups.CnpjGroup;
+import com.payment.usermanagement.util.validators.groups.CpfGroup;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -28,13 +27,12 @@ public record UserRecordDto(
                 message = "Invalid document format.")
         String document,
         @NotBlank(message = "Phone number is required")
-                @JsonProperty("phone_number")
+        @JsonProperty("phone_number")
         String phoneNumber,
         @NotBlank(message = "Password is required")
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
                 message = "Invalid password format")
         String pwd,
-        UserType userType,
         DocumentType documentType) {
 }
 

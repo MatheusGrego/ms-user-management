@@ -2,9 +2,9 @@ package com.payment.usermanagement.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.usermanagement.exceptions.checklist.ChecklistNotFoundException;
-import com.payment.usermanagement.models.Response;
+import com.payment.usermanagement.models.response.Response;
 import com.payment.usermanagement.models.checklist.Checklist;
-import com.payment.usermanagement.models.factories.ResponseFactory;
+import com.payment.usermanagement.models.response.factories.ResponseFactory;
 import com.payment.usermanagement.repositories.ChecklistRepository;
 import com.payment.usermanagement.services.interfaces.ICrud;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,7 +1,7 @@
 package com.payment.usermanagement.controllers.checklist;
 
 import com.payment.usermanagement.dtos.checklist.QrCodeRecordDto;
-import com.payment.usermanagement.models.Response;
+import com.payment.usermanagement.models.response.Response;
 import com.payment.usermanagement.models.checklist.QrCode;
 import com.payment.usermanagement.services.QrCodeService;
 import jakarta.servlet.http.HttpServletRequest;

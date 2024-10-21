@@ -16,7 +16,7 @@ public class Checklist {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String description;
+    private String title;
 
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ChecklistItem> items;

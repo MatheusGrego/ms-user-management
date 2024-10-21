@@ -1,7 +1,7 @@
 package com.payment.usermanagement.controllers.checklist;
 
 import com.payment.usermanagement.dtos.checklist.ChecklistRecordDto;
-import com.payment.usermanagement.models.Response;
+import com.payment.usermanagement.models.response.Response;
 import com.payment.usermanagement.models.checklist.Checklist;
 import com.payment.usermanagement.services.ChecklistService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,9 +15,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://26.175.94.150:3000")
 public class ChecklistController {
 
-    final ChecklistService checklistService;;
+    final ChecklistService checklistService;
 
     public ChecklistController(ChecklistService checklistService) {
         this.checklistService = checklistService;

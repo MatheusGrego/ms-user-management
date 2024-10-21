@@ -1,7 +1,7 @@
 package com.payment.usermanagement.controllers.user;
 
 import com.payment.usermanagement.models.User;
-import com.payment.usermanagement.models.Response;
+import com.payment.usermanagement.models.response.Response;
 import com.payment.usermanagement.dtos.user.UserRecordDto;
 import com.payment.usermanagement.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class UserController { //TODO: change pw
     final UserService userService;
 
     public UserController(UserService userService) {

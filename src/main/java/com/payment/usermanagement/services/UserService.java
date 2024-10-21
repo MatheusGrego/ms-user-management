@@ -2,13 +2,14 @@ package com.payment.usermanagement.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.usermanagement.exceptions.user.UserNotFoundException;
-import com.payment.usermanagement.models.Response;
+import com.payment.usermanagement.models.response.Response;
 import com.payment.usermanagement.models.User;
-import com.payment.usermanagement.models.factories.ResponseFactory;
+import com.payment.usermanagement.models.response.factories.ResponseFactory;
 import com.payment.usermanagement.repositories.UserRepository;
 import com.payment.usermanagement.services.interfaces.ICrud;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,21 +23,26 @@ public class UserService implements ICrud<Object, Object> {
     final
     ResponseFactory responseFactory;
     final ObjectMapper objectMapper;
+    private final
+    PasswordEncoder passwordEncoder;
 
 
-    public UserService(UserRepository userRepository, ResponseFactory responseFactory, ObjectMapper objectMapper) {
+    public UserService(UserRepository userRepository, ResponseFactory responseFactory, ObjectMapper objectMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.responseFactory = responseFactory;
         this.objectMapper = objectMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
+    public void create(User user) {
+        user.setPwd(passwordEncoder.encode(user.getPwd()));
+        userRepository.save(user);
     }
 
     @Override
     public Response save(Object dto, HttpServletRequest request) {
         var user = new User();
         BeanUtils.copyProperties(dto, user);
-
-        userRepository.save(user);
-
+        create(user);
         return responseFactory.createCreatedResponse(request.getRequestURI(), "User successfully created");
     }
 
