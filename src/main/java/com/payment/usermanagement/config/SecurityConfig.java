@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
@@ -24,21 +25,23 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(rQ -> {
                     rQ.requestMatchers("/api/auth/**").permitAll();
-                            rQ.requestMatchers(HttpMethod.POST, "/api/users").denyAll();
-                            rQ.requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("MANAGER");
-                            rQ.requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyRole("USER", "MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.GET, "/api/checklists/**").hasAnyRole("USER", "MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.PUT, "/api/checklists/**").hasAnyRole("USER", "MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.DELETE, "/api/checklists/**").hasRole("MANAGER");
-                           rQ.requestMatchers(HttpMethod.POST, "/api/qrcodes").hasAnyRole("MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.GET, "/api/qrcodes/**").hasAnyRole("USER", "MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.PUT, "/api/qrcodes/**").hasAnyRole("MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.DELETE, "/api/qrcodes/**").hasAnyRole("MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.POST, "/api/checklists/checklist-items/**").hasAnyRole("USER", "MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.GET, "/api/checklists/checklist-items/**").hasAnyRole("USER", "MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.PUT, "/api/checklists/checklist-items/**").hasAnyRole("USER", "MANAGER", "ADMIN");
-                            rQ.requestMatchers(HttpMethod.DELETE, "/api/checklists/checklist-items/**").hasRole("MANAGER");
-                            rQ.anyRequest().hasRole("ADMIN");
+                    // Open authentication routes for everyone
+                    rQ.requestMatchers("/api/auth/**").permitAll();
+                    // Restrict POST on users
+                    rQ.requestMatchers(HttpMethod.POST, "/api/users/**").denyAll();
+                    // Managers can view users and their own profiles
+                    rQ.requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("MANAGER");
+                    rQ.requestMatchers(HttpMethod.GET, "/api/users/{id}").authenticated(); // Allow authenticated users to access their own profile
+                    // Checklists access control
+                    rQ.requestMatchers("/api/checklists/**").hasAnyRole("USER", "MANAGER", "ADMIN");
+                    // QrCodes access control
+                    rQ.requestMatchers(HttpMethod.POST, "/api/qrcodes/**").hasAnyRole("MANAGER", "ADMIN");
+                    rQ.requestMatchers(HttpMethod.GET, "/api/qrcodes/**").hasAnyRole("USER", "MANAGER", "ADMIN");
+                    // Checklist Items access control
+                    rQ.requestMatchers("/api/checklists/checklist-items/**").hasAnyRole("USER", "MANAGER", "ADMIN");
+
+                    // All other requests require admin
+                    rQ.anyRequest().hasRole("ADMIN");
                 })
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
